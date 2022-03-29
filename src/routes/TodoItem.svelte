@@ -1,21 +1,48 @@
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
+	interface TODO {
+		action: string;
+		done: boolean;
+	}
+
+	export let todo: TODO;
+</script>
+
 <div
-	class="flex  transition-color delay-400 duration-300  ease-linear  px-5  items-center gap-x-3 border-b border-light-blue-92 dark:border-dark-blue-26 transition-colors  hover:text-light-blue-84 dark:hover:text-dark-blue-35 todo-item hover:cursor-pointer relative xl:px-6">
+	class="flex  transition-color delay-400 duration-300  ease-linear  px-5  items-center gap-x-3 border-b border-light-blue-92 dark:border-dark-blue-26 transition-colors todo-item  relative xl:px-6"
+	class:done={todo.done}
+	on:click>
+	<p
+		class="py-[14px] tracking-tight font-normal text-sm lg:text-lg lg:leading-none leading-4 w-full outline-none relative todo-text  grow-0 lg:py-5 hover:cursor-pointer">
+		{todo.action}
+	</p>
 	<svg
-		class="text-light-blue-92 dark:text-dark-blue-26  w-5 h-5 lg:w-6 lg:h-6"
+		class="text-light-blue-92 dark:text-dark-blue-26  w-5 h-5 lg:w-6 lg:h-6 -order-1"
 		viewBox="0 0 20 20"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg">
-		<path
-			d="M20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10Z"
-			fill="transparent" />
-		<path
-			class="transition-colors delay-400 duration-300  ease-out"
-			fill-rule="evenodd"
-			clip-rule="evenodd"
-			d="M10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19ZM10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z"
-			fill="currentColor" />
-		<g opacity="0" class="marked-icon transition-opacity duration-500 ease-out">
-			<circle cx="10" cy="10" r="10" fill="url(#gradient)" />
+		<circle
+			class="transition delay-400 duration-300  ease-linear"
+			cx="10"
+			cy="10"
+			r="9.5"
+			fill="transparent"
+			stroke="currentColor" />
+		<circle
+			class="transition delay-400 duration-300  ease-linear todo-circle"
+			cx="10"
+			cy="10"
+			r="9.5"
+			fill="transparent"
+			stroke="url(#gradient)" />
+
+		<g
+			opacity={todo.done ? 1 : 0}
+			class="transition-opacity delay-400 duration-300 ease-linear">
+			<circle cx="10" cy="10" r="9.5" fill="url(#gradient)" />
 			<path
 				d="M6.66675 10.2534L8.91333 12.5L13.9133 7.5"
 				stroke="white"
@@ -34,11 +61,10 @@
 			</linearGradient>
 		</defs>
 	</svg>
-	<p
-		class="py-[14px] tracking-tight font-normal text-sm lg:text-lg lg:leading-none leading-4	w-full outline-none relative todo-text  grow-0 lg:py-5">
-		Complete online JavaScript course
-	</p>
-	<button class="appearance-none ml-auto">
+
+	<button
+		class="appearance-none ml-auto"
+		on:click|stopPropagation={() => dispatch('remove')}>
 		<svg
 			width="12"
 			height="12"
@@ -55,17 +81,35 @@
 </div>
 
 <style>
-	.todo-item:hover .marked-icon {
-		opacity: 1;
-	}
-
 	.todo-text {
 		flex-basis: max-content;
 	}
 
-	.todo-item:hover .todo-text::after {
+	.done .todo-text::after {
 		width: 100%;
 		opacity: 1;
+	}
+
+	.todo-circle {
+		stroke-dasharray: 0 30;
+	}
+
+	@keyframes dash {
+		to {
+			stroke-dasharray: 30 0;
+		}
+	}
+	.done .todo-circle,
+	:not(.done).todo-text:hover + svg .todo-circle {
+		animation: dash 400ms linear forwards;
+	}
+
+	.done {
+		@apply text-light-blue-84;
+	}
+
+	:global(.dark) .done {
+		@apply text-dark-blue-35;
 	}
 
 	.todo-text::after {

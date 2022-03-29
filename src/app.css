@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 body {
-	@apply bg-light-gray bg-no-repeat bg-small font-normal min-h-screen leading-none text-light-blue-35 lg:bg-large dark:bg-dark-blue-11 dark:text-dark-blue-85 delay-700 duration-500 ease-out;
+	@apply bg-light-gray bg-no-repeat bg-small font-normal min-h-screen leading-none text-light-blue-35 lg:bg-large dark:bg-dark-blue-11 dark:text-dark-blue-85 delay-700 duration-500 ease-linear;
 
 	background-image: var(--light-gradient), url('images/light.webp');
 	--dark-gradient: linear-gradient(

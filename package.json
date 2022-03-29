@@ -32,5 +32,8 @@
     "typescript": "~4.6.2",
     "vercel": "^24.0.1"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "firebase": "^9.6.10"
+  }
 }
