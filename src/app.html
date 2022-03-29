@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<link rel="icon" href="%svelte.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="preload"
+			href="fonts/JosefinSans-Bold.ttf"
+			as="font"
+			crossorigin />
+
+		<link
+			rel="preload"
+			href="fonts/JosefinSans-Regular.ttf"
+			as="font"
+			crossorigin />
+
+		<style>
+			@font-face {
+				font-family: 'Josefin Sans';
+				font-style: normal;
+				font-weight: 400;
+				font-display: swap;
+				src: local('Josefin Sans'),
+					url('fonts/JosefinSans-Regular.ttf') format('truetype');
+			}
+			@font-face {
+				font-family: 'Josefin Sans';
+				font-style: normal;
+				font-weight: 700;
+				font-display: swap;
+				src: local('Josefin Sans'),
+					url('fonts/JosefinSans-Bold.ttf') format('truetype');
+			}
+		</style>
+
+		<title>Frontend Mentor | Todo app</title>
 		%svelte.head%
 	</head>
 	<body>
