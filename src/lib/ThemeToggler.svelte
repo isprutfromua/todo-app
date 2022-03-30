@@ -10,7 +10,10 @@
 	}
 </script>
 
-<button class="appearance-none" on:click={toggleTheme}>
+<button
+	class="appearance-none"
+	on:click={toggleTheme}
+	aria-label="Toggle theme">
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		class="w-5 h-5 lg:w-6 lg:h-6 dark:hidden"

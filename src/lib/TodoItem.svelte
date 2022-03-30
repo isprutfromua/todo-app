@@ -64,6 +64,7 @@
 
 	<button
 		class="appearance-none ml-auto"
+		aria-label="Remove todo"
 		on:click|stopPropagation={() => dispatch('remove')}>
 		<svg
 			width="12"
