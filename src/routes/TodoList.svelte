@@ -1,8 +1,13 @@
 <script lang="ts">
+	// components
+	import Dragger from './Dragger.svelte';
 	import TodoListActions from './TodoListActions.svelte';
 	import TodoItem from './TodoItem.svelte';
+	// svelte utilities
 	import { browser } from '$app/env';
+	import { flip } from 'svelte/animate';
 	import { slide, fade } from 'svelte/transition';
+	// firebase
 	import {
 		onSnapshot,
 		deleteDoc,
@@ -12,6 +17,7 @@
 		getDocs
 	} from 'firebase/firestore';
 	import { dbRef, db } from '../firebase/tools';
+	// stores
 	import { originTodos, todos } from '../stores/todos';
 	import { currentFilter } from '../stores/filter';
 
@@ -41,29 +47,6 @@
 		reorderItems();
 	}
 
-	import { flip } from 'svelte/animate';
-	let draggable;
-
-	async function dropHandler(e, todo) {
-		$todos = $todos.map((t) => {
-			if (t.id === todo.id) {
-				return { ...t, order: draggable.order };
-			}
-			if (t.id === draggable.id) {
-				return { ...t, order: todo.order };
-			}
-
-			return t;
-		});
-
-		reorderItems();
-		removeActiveClass(e);
-	}
-
-	function removeActiveClass(e: DragEvent) {
-		e.currentTarget.classList.remove('dragging');
-	}
-
 	function sortTodos(todos: []) {
 		return todos.sort((a, b) => a.order - b.order);
 	}
@@ -75,6 +58,11 @@
 			});
 		});
 	}
+
+	async function dragHandler(e) {
+		await todos.set(e.detail);
+		reorderItems();
+	}
 </script>
 
 <div
@@ -83,24 +71,13 @@
 		<!-- content here -->
 		<ul class="flex flex-col">
 			{#each sortTodos($todos) as todo (todo.id)}
-				<li
-					class="transition-none"
-					in:slide
-					out:fade
-					animate:flip
-					draggable="true"
-					on:dragstart={() => (draggable = todo)}
-					on:dragend={removeActiveClass}
-					on:dragleave={removeActiveClass}
-					on:dragover|preventDefault={(e) =>
-						e.currentTarget.classList.add('dragging')}
-					on:drop|preventDefault={(e) => {
-						dropHandler(e, todo);
-					}}>
-					<TodoItem
-						{todo}
-						on:remove={() => removeTodo(todo.id)}
-						on:click={() => completeTodo(todo)} />
+				<li animate:flip>
+					<Dragger dataItem={todo} dataArray={$todos} on:sorted={dragHandler}>
+						<TodoItem
+							{todo}
+							on:remove={() => removeTodo(todo.id)}
+							on:click={() => completeTodo(todo)} />
+					</Dragger>
 				</li>
 			{/each}
 		</ul>

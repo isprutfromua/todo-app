@@ -30,7 +30,7 @@
 <footer
 	class="grid bg-white text-light-blue-61
 		px-5 py-4 grid-cols-2 md:grid-cols-3 gap-x-3 border-b text-sm  leading-none tracking-tight border-light-blue-92 dark:border-dark-blue-26 transition-color  dark:bg-dark-blue-19 delay-400 duration-300  ease-linear justify-self-start lg:px-6 lg:py-5">
-	<p class:opacity-0={$todos.length == 0}>{$todos.length} items left</p>
+	<p>{$todos.length} items left</p>
 
 	{#if windowWidth >= 768}
 		<div class="justify-self-center">
