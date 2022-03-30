@@ -43,12 +43,12 @@
 	}
 
 	:global(.dark) .app {
-		background-image: var(--dark-gradient), url('images/dark.webp');
+		background-image: var(--dark-gradient), url('/images/dark.webp');
 		@apply bg-dark-blue-11 text-dark-blue-85;
 	}
 
 	:global(.light) .app {
-		background-image: var(--light-gradient), url('images/light.webp');
+		background-image: var(--light-gradient), url('/images/light.webp');
 		@apply bg-light-gray text-light-blue-35;
 	}
 </style>
