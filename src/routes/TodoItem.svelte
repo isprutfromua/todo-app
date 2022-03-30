@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="flex  transition-color delay-400 duration-300  ease-linear  px-5  items-center gap-x-3 border-b border-light-blue-92 dark:border-dark-blue-26 transition-colors todo-item  relative xl:px-6"
+	class="flex transition-color delay-400 duration-300  ease-linear  px-5  items-center gap-x-3 border-b border-light-blue-92 dark:border-dark-blue-26 transition-colors todo-item  relative xl:px-6 bg-white dark:bg-dark-blue-19 todo-item"
 	class:done={todo.done}
 	on:click>
 	<p
@@ -80,7 +80,8 @@
 	</button>
 </div>
 
-<style>
+<style lang="postcss">
+	@tailwind components;
 	.todo-text {
 		flex-basis: max-content;
 	}
@@ -123,5 +124,9 @@
 		opacity: 0;
 		transition: 400ms ease-in-out;
 		transition-property: opacity, width;
+	}
+
+	:global(.dragging) > .todo-item {
+		@apply !bg-transparent;
 	}
 </style>

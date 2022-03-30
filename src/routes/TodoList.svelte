@@ -3,10 +3,17 @@
 	import TodoItem from './TodoItem.svelte';
 	import { browser } from '$app/env';
 	import { slide, fade } from 'svelte/transition';
-	import { onSnapshot, deleteDoc, updateDoc, doc } from 'firebase/firestore';
+	import {
+		onSnapshot,
+		deleteDoc,
+		updateDoc,
+		doc,
+		addDoc,
+		getDocs
+	} from 'firebase/firestore';
 	import { dbRef, db } from '../firebase/tools';
 	import { currentFilter, originTodos, todos } from '../stores/todos';
-
+	let loadingData = true;
 	const unsubscribe =
 		browser &&
 		onSnapshot(dbRef, (querySnapshot) => {
@@ -17,6 +24,7 @@
 			});
 			$todos = fbTodos;
 			$originTodos = fbTodos;
+			loadingData = false;
 		});
 
 	async function todoDone(todo: TODO) {
@@ -28,6 +36,38 @@
 	async function removeTodo(id) {
 		await deleteDoc(doc(db, 'todos', id));
 	}
+	// drag and drop
+	import { flip } from 'svelte/animate';
+	let draggable;
+
+	async function dropHandler(e, todo) {
+		$todos = $todos.map((t) => {
+			if (t.id === todo.id) {
+				return { ...t, order: draggable.order };
+			}
+			if (t.id === draggable.id) {
+				return { ...t, order: todo.order };
+			}
+
+			return t;
+		});
+
+		$todos.forEach(async (todo) => {
+			await updateDoc(doc(db, 'todos', todo.id), {
+				order: todo.order
+			});
+		});
+
+		removeActiveClass(e);
+	}
+
+	function removeActiveClass(e: DragEvent) {
+		e.currentTarget.classList.remove('dragging');
+	}
+
+	function sortTodos(todos: []) {
+		return todos.sort((a, b) => a.order - b.order);
+	}
 </script>
 
 <div
@@ -35,8 +75,19 @@
 	{#if $todos.length}
 		<!-- content here -->
 		<ul class="flex flex-col">
-			{#each $todos as todo}
-				<li>
+			{#each sortTodos($todos) as todo (todo.id)}
+				<li
+					class="transition-none"
+					animate:flip
+					draggable="true"
+					on:dragstart={() => (draggable = todo)}
+					on:dragend={removeActiveClass}
+					on:dragleave={removeActiveClass}
+					on:dragover|preventDefault={(e) =>
+						e.currentTarget.classList.add('dragging')}
+					on:drop|preventDefault={(e) => {
+						dropHandler(e, todo);
+					}}>
 					<TodoItem
 						{todo}
 						on:remove={() => removeTodo(todo.id)}
@@ -44,9 +95,9 @@
 				</li>
 			{/each}
 		</ul>
-	{:else if $originTodos.length == 0}
+	{:else if !loadingData && $originTodos.length == 0}
 		<p class="p-5 lg:px-6 lg:py-5">No todos</p>
-	{:else if $todos.length == 0}
+	{:else if !loadingData && $todos.length == 0}
 		<p class="p-5 lg:px-6 lg:py-5">No {$currentFilter} todos</p>
 	{:else}
 		<p class="p-5 lg:px-6 lg:py-5">Loading todos</p>
@@ -56,12 +107,18 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
+	@tailwind components;
+
 	.todos-container {
 		box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.5);
 	}
 
 	:global(.dark) .todos-container {
 		box-shadow: 0px 35px 50px -15px rgba(0, 0, 0, 0.5);
+	}
+
+	:global(.dragging) {
+		@apply bg-dark-blue-43 dark:bg-light-blue-92;
 	}
 </style>

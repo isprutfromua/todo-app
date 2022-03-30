@@ -7,6 +7,7 @@
 	import { addDoc } from 'firebase/firestore';
 	import { dbRef } from '../firebase/tools';
 	import { currentTodo } from '../stores/todoinput';
+	import { originTodos } from '../stores/todos';
 
 	let windowWidth;
 
@@ -16,7 +17,8 @@
 
 		await addDoc(dbRef, {
 			action: todoValue,
-			done: false
+			done: false,
+			order: $originTodos.length + 1
 		});
 	}
 </script>
