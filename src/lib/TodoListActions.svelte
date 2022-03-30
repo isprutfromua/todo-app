@@ -9,7 +9,7 @@
 		onSnapshot
 	} from 'firebase/firestore';
 	import { db, dbRef } from '../firebase/tools';
-	import Filter from './Filter.svelte';
+	import Filter from '$lib/Filter.svelte';
 
 	let windowWidth;
 

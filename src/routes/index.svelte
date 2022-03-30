@@ -1,9 +1,9 @@
 <script>
-	import TodoList from './TodoList.svelte';
-	import Footer from './Footer.svelte';
-	import Header from './Header.svelte';
-	import TodoInput from './TodoInput.svelte';
-	import Filter from './Filter.svelte';
+	import TodoList from '$lib/TodoList.svelte';
+	import Footer from '$lib/Footer.svelte';
+	import Header from '$lib/Header.svelte';
+	import TodoInput from '$lib/TodoInput.svelte';
+	import Filter from '$lib/Filter.svelte';
 	import { addDoc } from 'firebase/firestore';
 	import { dbRef } from '../firebase/tools';
 	import { currentTodo } from '../stores/todoinput';

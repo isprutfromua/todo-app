@@ -1,5 +1,5 @@
 <script>
-	import ThemeToggler from './ThemeToggler.svelte';
+	import ThemeToggler from '$lib/ThemeToggler.svelte';
 </script>
 
 <header

@@ -1,8 +1,8 @@
 <script lang="ts">
 	// components
-	import Dragger from './Dragger.svelte';
-	import TodoListActions from './TodoListActions.svelte';
-	import TodoItem from './TodoItem.svelte';
+	import Dragger from '$lib/Dragger.svelte';
+	import TodoListActions from '$lib/TodoListActions.svelte';
+	import TodoItem from '$lib/TodoItem.svelte';
 	// svelte utilities
 	import { browser } from '$app/env';
 	import { flip } from 'svelte/animate';
@@ -68,10 +68,9 @@
 <div
 	class="todos-container bg-white transition-color delay-400 duration-300 ease-linear  dark:bg-dark-blue-19 rounded-md overflow-hidden mt-4 mb-4 lg:mt-6">
 	{#if $todos.length}
-		<!-- content here -->
 		<ul class="flex flex-col">
 			{#each sortTodos($todos) as todo (todo.id)}
-				<li animate:flip>
+				<li>
 					<Dragger dataItem={todo} dataArray={$todos} on:sorted={dragHandler}>
 						<TodoItem
 							{todo}
@@ -93,22 +92,12 @@
 	{/if}
 </div>
 
-<style lang="postcss">
-	@tailwind components;
-
+<style>
 	.todos-container {
 		box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.5);
 	}
 
 	:global(.dark) .todos-container {
 		box-shadow: 0px 35px 50px -15px rgba(0, 0, 0, 0.5);
-	}
-
-	:global(.dragging) {
-		@apply bg-dark-blue-85;
-	}
-
-	:global(.dark .dragging) {
-		@apply bg-light-blue-35;
 	}
 </style>
