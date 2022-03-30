@@ -2,38 +2,9 @@
 	import { getDocs, query, where } from 'firebase/firestore';
 	import { dbRef } from '../firebase/tools';
 
-	import { todos, currentFilter, originTodos } from '../stores/todos';
+	import { todos, originTodos } from '../stores/todos';
+	import { currentFilter } from '../stores/filter';
 
-	// let filterValues = async (filterQuery: string) => {
-	// 	let filteredTodosQuery;
-	// 	currentFilter.set(filterQuery);
-	// 	switch (filterQuery) {
-	// 		case 'active':
-	// 			filteredTodosQuery = query(dbRef, where('done', '==', false));
-	// 			break;
-	// 		case 'completed':
-	// 			filteredTodosQuery = query(dbRef, where('done', '==', true));
-	// 			break;
-	// 		case 'all':
-	// 		default:
-	// 			filteredTodosQuery = dbRef;
-	// 			break;
-	// 	}
-
-	// 	const completedTodosSnapshot = await getDocs(filteredTodosQuery);
-
-	// 	let filteredTodos = [];
-
-	// 	completedTodosSnapshot.forEach(async (doc) => {
-	// 		let todo = { ...doc.data(), id: doc.id };
-	// 		filteredTodos = [...filteredTodos, todo];
-	// 	});
-
-	// 	$todos = filteredTodos;
-	// };
-
-	// filterValues($currentFilter);
-	$: console.log($currentFilter);
 	$: {
 		if ($currentFilter === 'all') {
 			$todos = $originTodos;

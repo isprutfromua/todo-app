@@ -12,7 +12,8 @@
 		getDocs
 	} from 'firebase/firestore';
 	import { dbRef, db } from '../firebase/tools';
-	import { currentFilter, originTodos, todos } from '../stores/todos';
+	import { originTodos, todos } from '../stores/todos';
+	import { currentFilter } from '../stores/filter';
 	let loadingData = true;
 	const unsubscribe =
 		browser &&
@@ -35,6 +36,8 @@
 
 	async function removeTodo(id) {
 		await deleteDoc(doc(db, 'todos', id));
+
+		reorderItems();
 	}
 	// drag and drop
 	import { flip } from 'svelte/animate';
@@ -52,12 +55,7 @@
 			return t;
 		});
 
-		$todos.forEach(async (todo) => {
-			await updateDoc(doc(db, 'todos', todo.id), {
-				order: todo.order
-			});
-		});
-
+		reorderItems();
 		removeActiveClass(e);
 	}
 
@@ -67,6 +65,14 @@
 
 	function sortTodos(todos: []) {
 		return todos.sort((a, b) => a.order - b.order);
+	}
+
+	function reorderItems() {
+		$todos.forEach(async (todo, i) => {
+			await updateDoc(doc(db, 'todos', todo.id), {
+				order: i + 1
+			});
+		});
 	}
 </script>
 
@@ -78,6 +84,8 @@
 			{#each sortTodos($todos) as todo (todo.id)}
 				<li
 					class="transition-none"
+					in:slide
+					out:fade
 					animate:flip
 					draggable="true"
 					on:dragstart={() => (draggable = todo)}

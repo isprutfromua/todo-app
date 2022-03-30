@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore, collection } from 'firebase/firestore';
+import { getFirestore, collection, doc, deleteDoc } from 'firebase/firestore';
 import config from './settings.js';
 import { browser } from '$app/env';
 

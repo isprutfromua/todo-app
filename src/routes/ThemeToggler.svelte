@@ -1,8 +1,16 @@
-<button
-	class="appearance-none"
-	on:click={() => {
-		document.documentElement.classList.toggle('dark');
-	}}>
+<script lang="ts">
+	import { theme } from '../stores/theme';
+
+	function toggleTheme() {
+		if ($theme === 'light') {
+			theme.set('dark');
+		} else if ($theme === 'dark') {
+			theme.set('light');
+		}
+	}
+</script>
+
+<button class="appearance-none" on:click={toggleTheme}>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		class="w-5 h-5 lg:w-6 lg:h-6 dark:hidden"

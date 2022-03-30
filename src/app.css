@@ -1,23 +1,2 @@
 @tailwind base;
 @tailwind utilities;
-
-body {
-	@apply bg-light-gray bg-no-repeat bg-small font-normal min-h-screen leading-none text-light-blue-35 lg:bg-large dark:bg-dark-blue-11 dark:text-dark-blue-85 delay-700 duration-500 ease-linear;
-
-	background-image: var(--light-gradient), url('images/light.webp');
-	--dark-gradient: linear-gradient(
-		135deg,
-		rgba(55, 16, 189, 50%) 0%,
-		rgba(164, 35, 149, 50%) 100%
-	);
-	--light-gradient: linear-gradient(
-		225deg,
-		rgba(85, 150, 255, 50%) 0%,
-		rgba(172, 45, 235, 50%) 100%
-	);
-	transition-property: background-color, background-image;
-}
-
-.dark body {
-	background-image: var(--dark-gradient), url('images/dark.webp');
-}
