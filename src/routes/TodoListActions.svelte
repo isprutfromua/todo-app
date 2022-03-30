@@ -29,8 +29,8 @@
 
 <footer
 	class="grid bg-white text-light-blue-61
-		px-5 py-4 grid-cols-2 lg:grid-cols-3 gap-x-3 border-b text-sm  leading-none tracking-tight border-light-blue-92 dark:border-dark-blue-26 transition-color  dark:bg-dark-blue-19 delay-400 duration-300  ease-linear justify-self-start lg:px-6 lg:py-5">
-	<p>{$todos.length} items left</p>
+		px-5 py-4 grid-cols-2 md:grid-cols-3 gap-x-3 border-b text-sm  leading-none tracking-tight border-light-blue-92 dark:border-dark-blue-26 transition-color  dark:bg-dark-blue-19 delay-400 duration-300  ease-linear justify-self-start lg:px-6 lg:py-5">
+	<p class:opacity-0={$todos.length == 0}>{$todos.length} items left</p>
 
 	{#if windowWidth >= 768}
 		<div class="justify-self-center">
@@ -38,11 +38,10 @@
 		</div>
 	{/if}
 
-	{#if completedTodos > 0}
-		<button
-			on:click={deleteCompletedTodos}
-			class=" hover:cursor-pointer hover:text-light-blue-35 dark:hover:text-light-blue-92 justify-self-end ">
-			Clear completed
-		</button>
-	{/if}
+	<button
+		class:opacity-0={completedTodos == 0}
+		on:click={deleteCompletedTodos}
+		class=" hover:cursor-pointer hover:text-light-blue-35 dark:hover:text-light-blue-92 justify-self-end ">
+		Clear completed
+	</button>
 </footer>

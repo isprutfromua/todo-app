@@ -119,6 +119,10 @@
 	}
 
 	:global(.dragging) {
-		@apply bg-dark-blue-43 dark:bg-light-blue-92;
+		@apply bg-dark-blue-85;
+	}
+
+	:global(.dark .dragging) {
+		@apply bg-light-blue-35;
 	}
 </style>

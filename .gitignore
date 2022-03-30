@@ -2,6 +2,7 @@
 node_modules
 /build
 /.svelte-kit
+/src/firebase/settings.js
 /package
 .env
 .env.*
