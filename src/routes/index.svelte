@@ -10,16 +10,22 @@
 	import { originTodos } from '../stores/todos';
 
 	let windowWidth;
+	let error = false;
 
-	async function addTodo() {
+	async function addTodo(e) {
 		let todoValue = $currentTodo;
 		currentTodo.set('');
 
-		await addDoc(dbRef, {
-			action: todoValue,
-			done: false,
-			order: $originTodos.length + 1
-		});
+		if (todoValue && !$originTodos.some((el) => el.action === todoValue)) {
+			await addDoc(dbRef, {
+				action: todoValue,
+				done: false,
+				order: $originTodos.length + 1
+			});
+		} else {
+			error = true;
+			setTimeout(() => (error = false), 2000);
+		}
 	}
 </script>
 
@@ -28,7 +34,7 @@
 <main class="lg:mx-auto mx-6 lg:max-w-container ">
 	<Header />
 
-	<TodoInput on:submit={addTodo} />
+	<TodoInput {error} on:submit={addTodo} />
 
 	<TodoList />
 

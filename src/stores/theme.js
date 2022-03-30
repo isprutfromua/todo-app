@@ -15,7 +15,6 @@ if (browser) {
 export let theme = writable(themeValue);
 
 theme.subscribe((value) => {
-	console.log(value);
 	let appContainer = browser && document.querySelector('.app-container');
 
 	browser && localStorage.setItem('theme', value);

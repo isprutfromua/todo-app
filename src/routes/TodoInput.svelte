@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { currentTodo } from '../stores/todoinput';
+	import { fade } from 'svelte/transition';
 	const dispatch = createEventDispatcher();
+
+	export let error: boolean = false;
 </script>
 
 <form on:submit|preventDefault>
@@ -26,5 +29,11 @@
 			bind:value={$currentTodo}
 			placeholder="Create a new todo…"
 			class="py-[14px] gap-x-3 placeholder:font-light-grey-82 tracking-tight bg-transparent font-normal text-sm lg:text-lg lg:leading-none leading-4	w-full outline-none lg:py-5" />
+
+		{#if error}
+			<p class="text-red-500 shrink-0" transition:fade>
+				Please enter non-empty unique value
+			</p>
+		{/if}
 	</label>
 </form>
