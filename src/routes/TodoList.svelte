@@ -14,32 +14,33 @@
 	import { dbRef, db } from '../firebase/tools';
 	import { originTodos, todos } from '../stores/todos';
 	import { currentFilter } from '../stores/filter';
+
 	let loadingData = true;
 	const unsubscribe =
 		browser &&
 		onSnapshot(dbRef, (querySnapshot) => {
-			let fbTodos = [];
+			let todosSnapshot = [];
 			querySnapshot.forEach((doc) => {
 				let todo = { ...doc.data(), id: doc.id };
-				fbTodos = [...fbTodos, todo];
+				todosSnapshot = [...todosSnapshot, todo];
 			});
-			$todos = fbTodos;
-			$originTodos = fbTodos;
+			$todos = todosSnapshot;
+			$originTodos = todosSnapshot;
 			loadingData = false;
 		});
 
-	async function todoDone(todo: TODO) {
+	async function completeTodo(todo: TODO): void {
 		await updateDoc(doc(db, 'todos', todo.id), {
 			done: !todo.done
 		});
 	}
 
-	async function removeTodo(id) {
+	async function removeTodo(id: number): void {
 		await deleteDoc(doc(db, 'todos', id));
 
 		reorderItems();
 	}
-	// drag and drop
+
 	import { flip } from 'svelte/animate';
 	let draggable;
 
@@ -99,7 +100,7 @@
 					<TodoItem
 						{todo}
 						on:remove={() => removeTodo(todo.id)}
-						on:click={() => todoDone(todo)} />
+						on:click={() => completeTodo(todo)} />
 				</li>
 			{/each}
 		</ul>
